@@ -18,29 +18,38 @@ const io = new Server(httpServer,{
 
 
 const port = 8000
+const workers = new Map()
 
 io.on("connection",(socket) => {
 
     socket.broadcast.emit("activeUsers", activeUsers.map(user => user?.user))
     console.log("client connected",socket.id)
 
-    socket.on("disconnect",(socket) =>{
-      const deActivatingUser = activeUsers.pop(user => user?.user.socketID === socket.id)
-        console.log("client disconnected")
-        io.emit("activeUsers", activeUsers.map(user => user?.user))
+    socket.on("disconnect",(disconnection) =>{
+        workers.delete(socket.id)
+        
+      const deActivatingUser = [...workers].map((user) => {
+         if(user?.[1].socketID == socket.id){
+            workers.delete(user?.[0])
+         }
+    })
+        io.emit("activeUsers", [...workers])
     })
 
     socket.on("connected", (data) => {
+        workers.set(data?.user?.username,{userData:data.user,socketID:data.socketID})
+
         if(activeUsers.length == 0){
              activeUsers.push(data)
-             io.emit("activeUsers", activeUsers.map(user => user?.user))
+             workers.set(data?.user?.username,{userData:data.user,socketID:data.socketID})
+             io.emit("activeUsers", [...workers])
         }else{
-          const exists = activeUsers.some(user => user?.user?.username === data?.user?.username)
-            if (!exists) {
-                activeUsers.push(data)
-                io.emit("activeUsers", activeUsers.map(user => user?.user))
+            const exsits2 = workers.has(data?.user?.username)
+            if (!exsits2) {
+                workers.set(data?.user?.username,{userData:data.user,socketID:data.socketID})
+                io.emit("activeUsers", [...workers])
             } else {
-                io.emit("activeUsers", activeUsers.map(user => user?.user))
+                io.emit("activeUsers", [...workers])
             }
 
         }
@@ -48,6 +57,8 @@ io.on("connection",(socket) => {
     })
         
      socket.on("newMessage", (message) =>{
+    
+        io.emit("activeUsers", activeUsers.map(user => user?.user))
         socket.broadcast.emit("textMessage", message)
     })
 
