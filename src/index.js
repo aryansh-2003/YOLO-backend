@@ -57,9 +57,7 @@ io.on("connection",(socket) => {
     })
         
      socket.on("newMessage", (message) =>{
-    
-        io.emit("activeUsers", activeUsers.map(user => user?.user))
-        socket.broadcast.emit("textMessage", message)
+      socket.broadcast.emit("textMessage", message)
     })
 
 })
