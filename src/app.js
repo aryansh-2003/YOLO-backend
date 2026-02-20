@@ -3,11 +3,11 @@ import cors from 'cors'
 
 
 
-export const app = express()
+const app = express()
 
 
 app.use(cors({
-    origin: "https://yolo-virid-six.vercel.app", 
+    origin: "http://localhost:5173", 
     credentials: true
 }))
 app.use(express.json({limit:"16kb"}))
@@ -21,3 +21,4 @@ app.use("/api/v1/health",healthCheckRouter)
 app.use("/api/v1/user",userRouter)
 app.use("/api/v1/message",messageRouter)
 
+export default app;

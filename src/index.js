@@ -3,7 +3,7 @@ import http from 'http'
 import {Server} from 'socket.io'
 import {activeUsers} from './activeUsers.js'
 import connectDB from './db/db.js'
-import {app} from './app.js'
+import app from './app.js'
 
 
 dotenv.config()
