@@ -5,9 +5,8 @@ import cors from 'cors'
 
 const app = express()
 
-
 app.use(cors({
-    origin: "https://yolo-virid-six.vercel.app", 
+    origin: ["http://localhost:5173","https://yolo-virid-six.vercel.app","https://uptime.betterstack.com"], 
     credentials: true
 }))
 app.use(express.json({limit:"16kb"}))
