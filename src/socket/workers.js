@@ -2,6 +2,7 @@ const workers = new Map()
 
 
 function addUsers(data){
+    if(!data) return [...workers]
          if(workers.size == 0){
              workers.set(data?.user?.username,{userData:data.user,socketID:data.socketID})
              return [...workers]

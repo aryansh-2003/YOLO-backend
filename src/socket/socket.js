@@ -17,13 +17,21 @@ io.on("connection",(socket) => {
 
     socket.on("disconnect",(disconnection) =>{
         const activeUsers =  deleteUser(socket.id)
-        io.emit("activeUsers", activeUsers)
+          if(activeUsers){
+             io.emit("activeUsers", activeUsers)
+         }
     })
 
     socket.on("connected", (data) => {
          const activeUsers = addUsers(data)
-         io.emit("activeUsers", activeUsers)
+         if(activeUsers){
+             io.emit("activeUsers", activeUsers)
+         }
+    })
 
+    socket.on("sendActiveUsers",()=>{
+        const activeUsers = addUsers()
+        io.emit("activeUsers", activeUsers)
     })
         
      socket.on("newMessage", (message) =>{
