@@ -15,7 +15,8 @@ const userSchema = new Schema({
             index: true
         },
         avatar:{
-            type: String
+            type: String,
+            required:true
         },
         messages:[
             {

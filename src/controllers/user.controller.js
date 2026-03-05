@@ -2,13 +2,14 @@ import {User} from '../models/user.model.js'
 
 
 const logInUser = async(req,res) => {
-    const {name,username} = req.body
+    const {name,username,avatar} = req.body
     console.log(name)
-    if(!name || !username) return res.status(400).json("Name and Username is required")
+    if(!name || !username || !avatar) return res.status(400).json("Name and Username is required")
 
     const result = await User.create({
         fullname:name,
-        username:username
+        username:username,
+        avatar:avatar
     })
 
     console.log(result)
@@ -33,7 +34,26 @@ const getUser = async(req,res) =>{
     return res.status(200).json("User Found", result)
 
 }
+
+const deleteUser = async(req,res) => {
+    const {name,username} = req.body
+    console.log(name.username)
+
+    if(!name || !username) return res.status(400).json("Name and Username is required")
+
+       const result = await User.deleteOne({
+        name:name,
+        username:username
+    })
+
+    if(!result) return res.status(400).json("User not found")
+
+    return res.status(200).json("User Deleted", result)
+
+
+}
 export {
     logInUser,
-    getUser
+    getUser,
+    deleteUser
 }

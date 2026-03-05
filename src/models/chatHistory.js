@@ -1,6 +1,7 @@
 import mongoose, { Schema } from 'mongoose'
 
 const chatHistorySchema = new Schema({
+    
     message:{
         type:Schema.Types.ObjectId,
         ref:"Message"
